@@ -1,11 +1,9 @@
 package com.gggitpl.live;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 
 @Slf4j
 public class HandshakeTests {
@@ -13,6 +11,6 @@ public class HandshakeTests {
 
     @Test
     void test() {
-        System.out.println(System.currentTimeMillis());
+        System.out.println(Instant.now().toEpochMilli()/1000);
     }
 }

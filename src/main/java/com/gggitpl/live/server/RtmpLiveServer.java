@@ -1,9 +1,7 @@
 package com.gggitpl.live.server;
 
-import com.gggitpl.live.rtmp.HandshakeDecoder;
-import com.gggitpl.live.rtmp.HandshakeEncoder;
-import com.gggitpl.live.rtmp.handler.HandshakeMessageHandler;
-import com.gggitpl.live.rtmp.message.Handshake;
+import com.gggitpl.live.rtmp.HandshakeCodec;
+import com.gggitpl.live.rtmp.HandshakeHandler;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import io.netty.bootstrap.ServerBootstrap;
@@ -34,7 +32,8 @@ public class RtmpLiveServer implements LiveServer {
 
     @Override
     public void start() {
-        bootstrap.handler(new LoggingHandler(LogLevel.INFO))
+        bootstrap
+                .handler(new LoggingHandler(LogLevel.DEBUG))
                 .channel(NioServerSocketChannel.class)
                 .group(boosGroup, workerGroup)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
@@ -42,9 +41,8 @@ public class RtmpLiveServer implements LiveServer {
                     protected void initChannel(SocketChannel ch) {
                         ch.pipeline()
                                 .addLast(new LoggingHandler(LogLevel.DEBUG))
-                                .addLast(new HandshakeDecoder())
-                                //.addLast(new HandshakeEncoder())
-                                .addLast(new HandshakeMessageHandler());
+                                .addLast(new HandshakeCodec())
+                                .addLast(new HandshakeHandler());
 
                     }
                 })
