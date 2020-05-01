@@ -1,7 +1,8 @@
 package com.gggitpl.live.server;
 
-import com.gggitpl.live.rtmp.HandshakeCodec;
-import com.gggitpl.live.rtmp.HandshakeHandler;
+import com.gggitpl.live.rtmp.codec.HandshakeCodec;
+import com.gggitpl.live.rtmp.handler.AutoCloseChannelHandler;
+import com.gggitpl.live.rtmp.handler.HandshakeHandler;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import io.netty.bootstrap.ServerBootstrap;
@@ -42,7 +43,8 @@ public class RtmpLiveServer implements LiveServer {
                         ch.pipeline()
                                 .addLast(new LoggingHandler(LogLevel.DEBUG))
                                 .addLast(new HandshakeCodec())
-                                .addLast(new HandshakeHandler());
+                                .addLast(new HandshakeHandler())
+                                .addLast(new AutoCloseChannelHandler());
 
                     }
                 })
