@@ -18,7 +18,7 @@ public class Handshake {
 
     public static final short VERSION = 0x03;
 
-    public static final int HANDSHAKE_SIZE = 0x600;
+    public static final int HANDSHAKE_SIZE = 1536;
 
     public static byte[] RANDOM_BYTES = new byte[1528];
 

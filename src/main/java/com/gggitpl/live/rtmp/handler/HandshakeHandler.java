@@ -23,6 +23,7 @@ public class HandshakeHandler extends SimpleChannelInboundHandler<Handshake> {
                 if (future.isSuccess()) {
                     ctx.pipeline().remove(HandshakeCodec.class);
                     ctx.pipeline().remove(HandshakeHandler.class);
+                    ctx.pipeline().addLast(new RtmpHandler());
                 }
             });
         }
