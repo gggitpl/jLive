@@ -1,6 +1,7 @@
 package com.gggitpl.live.rtmp.handler;
 
-import com.gggitpl.live.rtmp.BasicHeader;
+import com.gggitpl.live.rtmp.ChunkHeader;
+import com.gggitpl.live.rtmp.SetChunkSize;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -16,10 +17,15 @@ public class RtmpHandler extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
-        log.debug("{}", in);
-        final BasicHeader of = BasicHeader.of(in);
-        System.out.println(of);
-
-        ctx.close();
+        if (in.readableBytes() < SetChunkSize.MAXIMUM_CHUNK_SIZE) {
+            return;
+        }
+        final ChunkHeader chunkHeader = ChunkHeader.of(in);
+        log.debug("chunkHeader: {}", chunkHeader);
+        if (SetChunkSize.isSetChunkSize(chunkHeader)) {
+            final SetChunkSize setChunkSize = SetChunkSize.of(chunkHeader, in);
+            System.out.println(setChunkSize);
+        }
+        //ctx.close();
     }
 }
